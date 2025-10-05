@@ -6,7 +6,7 @@ import { ExampleResponseSchema } from '@/features/example/lib/dto';
 
 const fetchExample = async (id: string) => {
   try {
-    const { data } = await apiClient.get(`/api/example/${id}`);
+    const { data } = await apiClient.get(`/example/${id}`);
     return ExampleResponseSchema.parse(data);
   } catch (error) {
     const message = extractApiErrorMessage(error, 'Failed to fetch example.');
