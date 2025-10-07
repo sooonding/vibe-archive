@@ -36,3 +36,11 @@ export const getLogger = (c: AppContext) =>
 
 export const getConfig = (c: AppContext) =>
   c.get(contextKeys.config) as AppConfig;
+
+export const getUser = async (c: AppContext) => {
+  const supabase = getSupabase(c);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+};

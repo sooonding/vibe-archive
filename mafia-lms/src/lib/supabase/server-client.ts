@@ -20,7 +20,7 @@ type WritableCookieStore = Awaited<ReturnType<typeof cookies>> & {
 export const createSupabaseServerClient = async (): Promise<
   SupabaseClient<Database>
 > => {
-  const cookieStore = (await cookies()) as WritableCookieStore;
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     env.NEXT_PUBLIC_SUPABASE_URL,
@@ -31,11 +31,13 @@ export const createSupabaseServerClient = async (): Promise<
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            if (typeof cookieStore.set === "function") {
-              cookieStore.set({ name, value, ...options });
-            }
-          });
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
+          } catch {
+            // Cookies can only be set in Server Actions or Route Handlers
+          }
         },
       },
     }
