@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { LOGIN_PATH } from "@/constants/auth";
+import { Header } from "@/components/layout/header";
 
 const buildRedirectUrl = (pathname: string) => {
   const redirectUrl = new URL(LOGIN_PATH, window.location.origin);
@@ -30,5 +31,12 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-8">
+        <Header />
+        {children}
+      </div>
+    </div>
+  );
 }

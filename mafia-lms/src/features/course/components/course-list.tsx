@@ -4,9 +4,14 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import { useCourses } from "../hooks/useCourses";
 import { CourseCard } from "./course-card";
 import { Button } from "@/components/ui/button";
+import type { CourseQueryParams } from "../lib/dto";
 
-export const CourseList = () => {
-  const { data: courses, isLoading, error, refetch } = useCourses();
+interface CourseListProps {
+  queryParams?: CourseQueryParams;
+}
+
+export const CourseList = ({ queryParams }: CourseListProps) => {
+  const { data: courses, isLoading, error, refetch } = useCourses(queryParams);
 
   if (isLoading) {
     return (

@@ -51,4 +51,44 @@ export const registerAuthRoutes = (app: Hono<AppEnv>) => {
 
     return respond(c, result);
   });
+
+  app.get('/auth/role', async (c) => {
+    const supabase = getSupabase(c);
+    const logger = getLogger(c);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return respond(
+        c,
+        failure(401, 'UNAUTHORIZED', 'You must be logged in.'),
+      );
+    }
+
+    try {
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (error || !userData) {
+        logger.error('Failed to fetch user role', error?.message);
+        return respond(
+          c,
+          failure(500, authErrorCodes.fetchError, 'Failed to fetch user role'),
+        );
+      }
+
+      return c.json({ role: userData.role });
+    } catch (error) {
+      logger.error('Unexpected error fetching user role', error);
+      return respond(
+        c,
+        failure(500, authErrorCodes.fetchError, 'Failed to fetch user role'),
+      );
+    }
+  });
 };

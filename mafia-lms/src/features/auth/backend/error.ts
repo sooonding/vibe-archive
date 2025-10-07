@@ -4,6 +4,7 @@ export const authErrorCodes = {
   invalidInput: 'INVALID_INPUT',
   profileCreationFailed: 'PROFILE_CREATION_FAILED',
   termsAcceptanceFailed: 'TERMS_ACCEPTANCE_FAILED',
+  fetchError: 'AUTH_FETCH_ERROR',
 } as const;
 
 export type AuthServiceError =
