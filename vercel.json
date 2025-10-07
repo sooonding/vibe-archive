@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd mafia-lms && npm run build",
-  "outputDirectory": "mafia-lms/.next",
-  "installCommand": "cd mafia-lms && npm install"
-}
